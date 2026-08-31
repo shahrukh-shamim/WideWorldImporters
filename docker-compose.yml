@@ -22,6 +22,8 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "StrongPassword@"
+    volumes:
+      - wwi-db-data:/var/opt/mssql
   wwi-api:
     container_name: wwi-api
     build:
@@ -58,3 +60,7 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
       - ${HOME:-/root}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+
+volumes:
+  wwi-db-data:
+    driver: local
