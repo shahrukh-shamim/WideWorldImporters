@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
         <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+        <NullabilityInfoContextSupport>true</NullabilityInfoContextSupport>
     </PropertyGroup>
 
     <ItemGroup>
