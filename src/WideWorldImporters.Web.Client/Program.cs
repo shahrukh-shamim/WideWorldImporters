@@ -13,7 +13,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddScoped<IAuthenticationProvider, AnonymousAuthenticationProvider>();
 
 builder.Services
-    .AddHttpClient<IRequestAdapter, HttpClientRequestAdapter>(client => client.BaseAddress = new Uri("https://localhost:5000"));
+    .AddHttpClient<IRequestAdapter, HttpClientRequestAdapter>(client => client.BaseAddress = new Uri("http://localhost:5000"));
 
 builder.Services.AddScoped<ApiClient>();
 
