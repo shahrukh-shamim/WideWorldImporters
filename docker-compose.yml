@@ -22,6 +22,8 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "StrongPassword@"
+    volumes:
+      - wwi-db-data:/var/opt/mssql
   wwi-api:
     container_name: wwi-api
     build:
@@ -31,17 +33,15 @@ services:
       - wwi
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_HTTPS_PORTS=5000
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=SuperStrongPassword
+      - ASPNETCORE_HTTP_PORTS=5000
     profiles:  ["api", "backend", "dev"]
     env_file:
       - ./docker/.env
     ports:
       - "5000:5000"
     volumes:
-      - ~/.aspnet/https:/https:ro      
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ~/.aspnet/https:/https:ro
+      - ${HOME:-/root}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
   wwi-app:
     container_name: wwi-app
     build:
@@ -51,14 +51,16 @@ services:
       - wwi
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_HTTPS_PORTS=5001
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=SuperStrongPassword
+      - ASPNETCORE_HTTP_PORTS=5001
     profiles:  ["app", "dev"]
     env_file:
       - ./docker/.env
     ports:
       - "5001:5001"
     volumes:
-      - ~/.aspnet/https:/https:ro      
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ~/.aspnet/https:/https:ro
+      - ${HOME:-/root}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+
+volumes:
+  wwi-db-data:
+    driver: local
