@@ -1,0 +1,53 @@
+@page "/InvoicesDataGrid"
+@using WideWorldImporters.Web.Client.Components
+@using WideWorldImporters.Shared.ApiSdk;
+@using WideWorldImporters.Shared.ApiSdk.Models.WideWorldImportersService;
+@using WideWorldImporters.Shared.Models;
+
+@inject ApiClient ApiClient;
+
+<PageTitle>Invoices</PageTitle>
+
+<h1>Invoices</h1>
+
+@if (InvoiceProvider == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <FluentDataGrid @ref="DataGrid" ItemsProvider="@InvoiceProvider" Pagination="@Pagination" TGridItem=Invoice>
+        <PropertyColumn Title="Invoice ID" Property="@(i => i!.InvoiceId)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="InvoiceId" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Invoice Date" Property="@(i => i!.InvoiceDate)" Format="yyyy-MM-dd" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <DateFilter PropertyName="InvoiceDate" FilterState="FilterState"></DateFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Customer ID" Property="@(i => i!.CustomerId)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="CustomerId" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Order ID" Property="@(i => i!.OrderId)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="OrderId" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Credit Note" Property="@(i => i!.IsCreditNote)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <BooleanFilter PropertyName="IsCreditNote" FilterState="FilterState"></BooleanFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Last Edited By" Property="@(i => i!.LastEditedByNavigation!.PreferredName)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <StringFilter PropertyName="LastEditedByNavigation/PreferredName" FilterState="FilterState"></StringFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+    </FluentDataGrid>
+
+    <FluentPaginator State="@Pagination" />
+}
