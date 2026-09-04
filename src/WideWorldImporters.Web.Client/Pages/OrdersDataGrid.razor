@@ -1,0 +1,48 @@
+@page "/OrdersDataGrid"
+@using WideWorldImporters.Web.Client.Components
+@using WideWorldImporters.Shared.ApiSdk;
+@using WideWorldImporters.Shared.ApiSdk.Models.WideWorldImportersService;
+@using WideWorldImporters.Shared.Models;
+
+@inject ApiClient ApiClient;
+
+<PageTitle>Orders</PageTitle>
+
+<h1>Orders</h1>
+
+@if (OrderProvider == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <FluentDataGrid @ref="DataGrid" ItemsProvider="@OrderProvider" Pagination="@Pagination" TGridItem=Order>
+        <PropertyColumn Title="Order ID" Property="@(o => o!.OrderId)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="OrderId" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Order Date" Property="@(o => o!.OrderDate)" Format="yyyy-MM-dd" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <DateFilter PropertyName="OrderDate" FilterState="FilterState"></DateFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Expected Delivery" Property="@(o => o!.ExpectedDeliveryDate)" Format="yyyy-MM-dd" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <DateFilter PropertyName="ExpectedDeliveryDate" FilterState="FilterState"></DateFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Customer ID" Property="@(o => o!.CustomerId)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="CustomerId" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Last Edited By" Property="@(o => o!.LastEditedByNavigation!.PreferredName)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <StringFilter PropertyName="LastEditedByNavigation/PreferredName" FilterState="FilterState"></StringFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+    </FluentDataGrid>
+
+    <FluentPaginator State="@Pagination" />
+}
