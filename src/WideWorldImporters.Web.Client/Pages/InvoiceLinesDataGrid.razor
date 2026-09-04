@@ -1,0 +1,58 @@
+@page "/InvoiceLinesDataGrid"
+@using WideWorldImporters.Web.Client.Components
+@using WideWorldImporters.Shared.ApiSdk;
+@using WideWorldImporters.Shared.ApiSdk.Models.WideWorldImportersService;
+@using WideWorldImporters.Shared.Models;
+
+@inject ApiClient ApiClient;
+
+<PageTitle>Invoice Lines</PageTitle>
+
+<h1>Invoice Lines</h1>
+
+@if (InvoiceLineProvider == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <FluentDataGrid @ref="DataGrid" ItemsProvider="@InvoiceLineProvider" Pagination="@Pagination" TGridItem=InvoiceLine>
+        <PropertyColumn Title="Invoice Line ID" Property="@(i => i!.InvoiceLineId)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="InvoiceLineId" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Invoice ID" Property="@(i => i!.InvoiceId)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="InvoiceId" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Description" Property="@(i => i!.Description)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <StringFilter PropertyName="Description" FilterState="FilterState"></StringFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Quantity" Property="@(i => i!.Quantity)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="int" PropertyName="Quantity" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Unit Price" Property="@(i => i!.UnitPrice)" Format="C" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="decimal" PropertyName="UnitPrice" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Extended Price" Property="@(i => i!.ExtendedPrice)" Format="C" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <NumericFilter TItem="decimal" PropertyName="ExtendedPrice" FilterState="FilterState"></NumericFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Title="Last Edited By" Property="@(i => i!.LastEditedByNavigation!.PreferredName)" Sortable="true" Align=Align.Start>
+            <ColumnOptions>
+                <StringFilter PropertyName="LastEditedByNavigation/PreferredName" FilterState="FilterState"></StringFilter>
+            </ColumnOptions>
+        </PropertyColumn>
+    </FluentDataGrid>
+
+    <FluentPaginator State="@Pagination" />
+}
